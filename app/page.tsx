@@ -9,16 +9,12 @@ type Message = {
   id: number;
   text: string;
   sender: string;
-  avatar: string;
   time: string;
 };
 
 type OnlineUser = {
   username: string;
-  avatar: string;
 };
-
-const AVATARS = ["🐯","🦊","🐼","🦁","🐨","🦄","🐸","🦋"];
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -30,9 +26,8 @@ export default function Home() {
   const [aiLoading, setAiLoading] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [connected, setConnected] = useState(false);
-  const avatar = AVATARS[nameInput.length % AVATARS.length];
-const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null); 
-const socketRef = useRef<Socket | null>(null);
+  const typingTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
     const socket = io("http://localhost:3001", {
@@ -80,10 +75,7 @@ const socketRef = useRef<Socket | null>(null);
   const handleJoin = () => {
     if (!nameInput.trim() || !socketRef.current) return;
     setUsername(nameInput.trim());
-    socketRef.current.emit("user_join", {
-      username: nameInput.trim(),
-      avatar
-    });
+    socketRef.current.emit("user_join", { username: nameInput.trim() });
     setJoined(true);
   };
 
@@ -91,7 +83,6 @@ const socketRef = useRef<Socket | null>(null);
     if (!socketRef.current) return;
     socketRef.current.emit("typing", username);
     clearTimeout(typingTimeout.current ?? undefined);
-
     typingTimeout.current = setTimeout(() => {
       socketRef.current?.emit("stop_typing");
     }, 1500);
@@ -107,8 +98,7 @@ const socketRef = useRef<Socket | null>(null);
       id: Date.now(),
       text,
       sender: username,
-      avatar,
-      time: new Date().toLocaleTimeString("bn-BD")
+      time: new Date().toLocaleTimeString("en-US")
     };
     socketRef.current.emit("send_message", msg);
 
@@ -126,8 +116,7 @@ const socketRef = useRef<Socket | null>(null);
           id: Date.now() + 1,
           text: data.reply,
           sender: "NexAI",
-          avatar: "🤖",
-          time: new Date().toLocaleTimeString("bn-BD")
+          time: new Date().toLocaleTimeString("en-US")
         };
         socketRef.current.emit("send_message", aiMsg);
       } catch {
@@ -148,7 +137,7 @@ const socketRef = useRef<Socket | null>(null);
             <p className="text-gray-400 text-sm mt-1">Enter Your Name</p>
           </div>
           <div className={`text-xs text-center py-1 rounded-lg ${connected ? "bg-green-900 text-green-400" : "bg-red-900 text-red-400"}`}>
-            {connected ? "✅ Server connected" : "⏳ Server connect হচ্ছে..."}
+            {connected ? "✅ Server connected" : "⏳ Connecting to server..."}
           </div>
           <input
             className="bg-gray-800 text-white rounded-xl px-4 py-3 outline-none text-sm"

@@ -25,18 +25,18 @@ export default function MessageBubble({ msg, username }: { msg: Message; usernam
   );
 
   return (
-    <div className={`flex gap-3 ${isMe ? "flex-row-reverse" : ""}`}>
+    <div className={`flex gap-2 md:gap-3 ${isMe ? "flex-row-reverse" : ""}`}>
       <div
-        className="w-9 h-9 rounded-full flex items-center justify-center text-lg flex-shrink-0"
+        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-xs md:text-sm font-bold text-white flex-shrink-0"
         style={{ background: isAI ? "#185fa5" : getColor(msg.sender) }}
       >
-        {msg.sender === "NexAI" ? "🤖" : msg.sender.split(" ").map((w:string) => w[0]).join("").slice(0, 2).toUpperCase()}
+        {msg.sender === "NexAI" ? "🤖" : msg.sender.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase()}
       </div>
-      <div className={`max-w-sm flex flex-col gap-1 ${isMe ? "items-end" : "items-start"}`}>
+      <div className={`max-w-[70%] md:max-w-sm flex flex-col gap-1 ${isMe ? "items-end" : "items-start"}`}>
         <div className="text-xs text-gray-400">
           {msg.sender} · {msg.time}
         </div>
-        <div className={`px-4 py-2 rounded-2xl text-sm leading-relaxed ${
+        <div className={`px-3 md:px-4 py-2 rounded-2xl text-sm leading-relaxed break-words ${
           isMe
             ? "bg-purple-600 text-white rounded-tr-sm"
             : isAI

@@ -27,7 +27,7 @@ export async function GET(req: Request) {
       io.emit("online_users", Object.values(onlineUsers));
       io.emit("receive_message", {
         id: Date.now(),
-        text: `${username} যোগ দিয়েছে! 👋`,
+        text: `${username} join..! 👋`,
         sender: "system",
         time: new Date().toLocaleTimeString("bn-BD")
       });
@@ -54,7 +54,7 @@ export async function GET(req: Request) {
         io.emit("online_users", Object.values(onlineUsers));
         io.emit("receive_message", {
           id: Date.now(),
-          text: `${user.username} চলে গেছে`,
+          text: `${user.username} left..!`,
           sender: "system",
           time: new Date().toLocaleTimeString("bn-BD")
         });
