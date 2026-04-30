@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💬 AI Chat
 
-## Getting Started
+A real-time group chat application with AI integration built with Next.js and Socket.io.
 
-First, run the development server:
+## 🌐 Live Demo
+[AI Chat](https://ai-messanger-jk5jyjfei-rozena-akters-projects.vercel.app)
 
+## ✨ Features
+
+- **Real-time Messaging** — Instant message delivery using Socket.io
+- **AI Integration** — Smart AI responses when mentioning `@ai`
+- **Online Status** — See who's online in real-time
+- **Typing Indicators** — Know when others are typing
+- **Message Read Receipts** — See who read your messages
+- **Emoji Reactions** — React to messages with emojis
+- **Message Edit & Delete** — Edit or delete your own messages
+- **Responsive Design** — Works on all devices
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Backend:** Node.js, Express, Socket.io
+- **AI Service:** OpenRouter API
+- **Deployment:** Vercel (Frontend), Railway (Backend)
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- OpenRouter API Key
+
+### Installation
+
+**1. Clone the repository**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/rozenaakter/ai-messanger.git
+cd ai-messanger
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Install dependencies**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**3. Create `.env.local` file**
+OPENROUTER_API_KEY=your_api_key_here
+**4. Clone and run the server**
+```bash
+git clone https://github.com/rozenaakter/ai-chat-server.git
+cd ai-chat-server
+npm install
+node server.js
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**5. Run the frontend**
+```bash
+npm run dev
+```
 
-## Learn More
+**6. Open your browser**
+http://localhost:3000
 
-To learn more about Next.js, take a look at the following resources:
+## 💡 How to use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Enter your name to join the chat
+- Type a message and press **Enter** or click **Send**
+- Mention **@ai** to get AI responses
+- Hover over messages to **Edit**, **Delete**, or **React**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
 
-## Deploy on Vercel
+ai-messanger/
+├── app/
+│   ├── api/
+│   │   └── ai/route.ts      # AI API endpoint
+│   └── page.tsx             # Main chat page
+├── components/
+│   ├── Sidebar.tsx          # Online users sidebar
+│   ├── ChatWindow.tsx       # Chat messages window
+│   ├── MessageBubble.tsx    # Individual message component
+│   └── InputBar.tsx         # Message input bar
+└── lib/
+└── socket.ts            # Socket.io client
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 👩‍💻 Developer
+
+**Rozena Akter**
+- GitHub: [@rozenaakter](https://github.com/rozenaakter)
