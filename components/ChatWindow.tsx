@@ -6,6 +6,9 @@ type Message = {
   text: string;
   sender: string;
   time: string;
+  readBy?: string[];
+  edited?: boolean;
+  reactions?: { [emoji: string]: string[] };
 };
 
 type Props = {
@@ -13,9 +16,12 @@ type Props = {
   username: string;
   typing: string;
   aiLoading: boolean;
+  onDelete: (id: number) => void;
+  onEdit: (id: number, newText: string) => void;
+  onReact: (messageId: number, emoji: string) => void;
 };
 
-export default function ChatWindow({ messages, username, typing, aiLoading }: Props) {
+export default function ChatWindow({ messages, username, typing, aiLoading, onDelete, onEdit, onReact }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,7 +49,14 @@ export default function ChatWindow({ messages, username, typing, aiLoading }: Pr
           </div>
         )}
         {messages.map((msg) => (
-          <MessageBubble key={msg.id} msg={msg} username={username} />
+          <MessageBubble
+            key={msg.id}
+            msg={msg}
+            username={username}
+            onDelete={onDelete}
+            onEdit={onEdit}
+            onReact={onReact}
+          />
         ))}
         <div ref={bottomRef} />
       </div>

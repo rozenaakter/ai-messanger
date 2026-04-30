@@ -10,6 +10,9 @@ type Message = {
   text: string;
   sender: string;
   time: string;
+  readBy?: string[];
+  edited?: boolean;
+  reactions?:{ [emoji: string]: string[] };
 };
 
 type OnlineUser = {
@@ -57,6 +60,27 @@ export default function Home() {
       setMessages(history);
     });
 
+    socket.on("message_read", ({ messageId, username: readUsername }) => {
+      setMessages(prev => prev.map(msg =>
+        msg.id === messageId && !(msg.readBy || []).includes(readUsername)
+          ? { ...msg, readBy: [...(msg.readBy || []), readUsername] }
+          : msg
+      ));
+    });
+
+    socket.on("delete_message", (messageID) => {
+      setMessages(prev => prev.filter(msg => msg.id !== messageID));
+    });
+    socket.on("edit_message", ({ messageId, newText }) => {
+  setMessages(prev => prev.map(msg =>
+    msg.id === messageId ? { ...msg, text: newText, edited: true } : msg
+  ));
+  });
+
+  socket.on("update_reaction", ({ messageId, reactions }) => {
+    setMessages(prev => prev.map(msg => msg.id === messageId ? {...msg, reactions} : msg));
+  })
+
     socket.on("online_users", (users) => {
       setOnlineUsers(users);
     });
@@ -71,6 +95,24 @@ export default function Home() {
       socket.disconnect();
     };
   }, []);
+
+  const readMessages = useRef<Set<number>>(new Set());
+
+useEffect(() => {
+  if (!joined || !socketRef.current) return;
+  messages.forEach(msg => {
+    if (
+      msg.sender !== username &&
+      !readMessages.current.has(msg.id)
+    ) {
+      readMessages.current.add(msg.id);
+      socketRef.current?.emit("message_read", {
+        messageId: msg.id,
+        username
+      });
+    }
+  });
+}, [messages, joined]);
 
   const handleJoin = () => {
     if (!nameInput.trim() || !socketRef.current) return;
@@ -126,6 +168,22 @@ export default function Home() {
       }
     }
   };
+  const deleteMessage = (messageId: number) =>{
+    socketRef.current?.emit("delete_message", messageId);
+  }
+
+  const editMessage = (messageId: number, newText: string) => {
+    socketRef.current?.emit("edit_message", {messageId, newText});
+  };
+  const reactMessage = (messageId: number, emoji: string) => {
+  const msg = messages.find(m => m.id === messageId);
+  const hasReacted = msg?.reactions?.[emoji]?.includes(username);
+  if (hasReacted) {
+    socketRef.current?.emit("remove_reaction", { messageId, emoji, username });
+  } else {
+    socketRef.current?.emit("add_reaction", { messageId, emoji, username });
+  }
+};
 
   if (!joined) {
     return (
@@ -168,6 +226,9 @@ export default function Home() {
           username={username}
           typing={typing}
           aiLoading={aiLoading}
+          onDelete={deleteMessage}
+          onEdit = {editMessage}
+          onReact={reactMessage}
         />
         <InputBar
           input={input}
