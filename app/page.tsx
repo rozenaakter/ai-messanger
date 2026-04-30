@@ -33,7 +33,7 @@ export default function Home() {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3001", {
+    const socket = io("chat-server-production-b868.up.railway.app", {
       transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionAttempts: 5,
