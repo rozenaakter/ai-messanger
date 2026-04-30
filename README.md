@@ -85,5 +85,5 @@ ai-messanger/
 
 ## 👩‍💻 Developer
 
-**Rozena Akter**
+**Most Rozena Akter**
 - GitHub: [@rozenaakter](https://github.com/rozenaakter)
