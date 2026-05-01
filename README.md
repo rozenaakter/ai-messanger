@@ -3,7 +3,7 @@
 A real-time group chat application with AI integration built with Next.js and Socket.io.
 
 ## 🌐 Live Demo
-[AI Chat](https://ai-messanger-jk5jyjfei-rozena-akters-projects.vercel.app)
+[AI Chat](https://ai-messanger.vercel.app)
 
 ## ✨ Features
 
